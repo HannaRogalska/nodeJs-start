@@ -1,0 +1,4 @@
+MACBOOK-AIR-HANNA 
+ arm64 - darwin 
+ 8 
+ Data Wed Sep 24 2025 16:29:40 GMT+0200 (Central European Summer Time) 

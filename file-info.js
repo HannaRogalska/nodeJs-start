@@ -1,7 +1,7 @@
 import path from "path";
 import fs from "fs/promises"
 import { log } from "console";
-import { fileURLToPath } from "url";
+
 const text = './text.txt'
 
 export const info = async() => {
