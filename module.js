@@ -10,12 +10,14 @@ export const moduleFs = async () => {
   const nameHost = os.hostname().toUpperCase().slice(0, 17);
   const arc = os.arch();
   const plat = os.platform();
-  const data = new Date();
+    const data = new Date();
+    const month = data.getMonth() + 1;
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
 
   await fs.writeFile(
     "./copy/copy.txt",
     `${nameHost} ${"\n"} ${arc} - ${plat} ${"\n"} ${
       os.cpus().length
-    } ${"\n"} Day: ${data.getDay()} ${"\n"} Month: ${data.getMonth()}${"\n"} Year: ${data.getFullYear()} ${"\n"} Time: ${data.getHours()}:${data.getMinutes()}`
+    } ${"\n"} Day: ${daysOfWeek[data.getDay()]} ${"\n"} Month: ${month} ${"\n"} Year: ${data.getFullYear()} ${"\n"} Time: ${data.getHours()}:${data.getMinutes()}`
   );
 };
