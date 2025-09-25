@@ -1,6 +1,8 @@
 import { add } from "./math.js";
 import { info } from "./file-info.js";
 import { moduleFs } from "./module.js";
+import { processArv } from "./process.js";
+
 import fs from "fs/promises";
 
 add(2, 2);
@@ -19,3 +21,4 @@ console.log(os.cpus().length);
 console.log(os.freemem() / 1024 / 1024);
 info();
 moduleFs();
+processArv();

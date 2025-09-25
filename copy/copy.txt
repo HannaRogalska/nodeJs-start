@@ -1,7 +1,0 @@
-MACBOOK-AIR-HANNA 
- arm64 - darwin 
- 8 
- Day: Wednesday 
- Month: 9 
- Year: 2025 
- Time: 18:2
