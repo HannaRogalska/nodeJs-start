@@ -2,7 +2,8 @@
 // import { info } from "./file-info.js";
 // import { moduleFs } from "./module.js";
 // import { processArv } from "./process.js";
-import { todo } from "./todo.js";
+// import { todo } from "./todo.js";
+import { chunk } from "./stream_file.js";
 
 // import fs from "fs/promises";
 
@@ -23,4 +24,5 @@ import { todo } from "./todo.js";
 // info();
 // moduleFs();
 // processArv();
-todo();
+// todo();
+chunk()
