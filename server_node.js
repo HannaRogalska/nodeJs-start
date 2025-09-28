@@ -1,10 +1,11 @@
 import http from "http";
-import fs from "fs/promises";
+import fsp from "fs/promises";
+import fs from "fs";
 import { URL } from "url";
 
 const server = http.createServer(async (req, res) => {
-    const urlWith = new URL(`http://localhost:3000${req.url}`);
-    const path = urlWith.pathname;
+  const urlWith = new URL(`http://localhost:3000${req.url}`);
+  const path = urlWith.pathname;
   switch (path) {
     case "/":
       res.writeHead(200, { "content-type": "text/plain; charset=utf-8" });
@@ -12,9 +13,13 @@ const server = http.createServer(async (req, res) => {
       break;
     case "/todos":
       try {
-        const todos = await fs.readFile("todo.txt", "utf-8");
+        const todos = fs.createReadStream("todo.txt", "utf-8");
         res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
-        res.end(todos);
+        todos.on("error", (err) => {
+          if (err.code === "ENOENT") res.end("No todos yet!");
+          else res.end("Server error");
+        })
+        todos.pipe(res);
       } catch (err) {
         if (err.code === "ENOENT") {
           res.writeHead(200, { "Content-Type": "text/plain; charset=utf-8" });
@@ -27,10 +32,10 @@ const server = http.createServer(async (req, res) => {
       break;
     case "/add":
       const getTodo = urlWith.searchParams.get("todo");
-      await fs.appendFile("./todo.txt",`\n${getTodo}`);
-      const allTodos = await fs.readFile("./todo.txt", "utf-8");
+      await fsp.appendFile("./todo.txt", `\n${getTodo}`);
+      const allTodos = fs.createReadStream("./todo.txt", "utf-8");
       res.writeHead(200, { "content-type": "text/plain; charset=utf-8" });
-      res.end(allTodos);
+      allTodos.pipe(res)
       break;
 
     default:

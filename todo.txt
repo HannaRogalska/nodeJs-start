@@ -1,4 +1,3 @@
- Green
- Red
- blue
- blue
+Green
+Red
+blue

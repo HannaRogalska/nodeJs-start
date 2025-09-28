@@ -1,2 +1,3 @@
 Green
-RedAdd new todo
+Red
+blueAdd new todo
