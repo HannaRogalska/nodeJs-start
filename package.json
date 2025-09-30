@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/HannaRogalska/nodeJs-start/issues"
   },
-  "homepage": "https://github.com/HannaRogalska/nodeJs-start#readme"
+  "homepage": "https://github.com/HannaRogalska/nodeJs-start#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
 }
