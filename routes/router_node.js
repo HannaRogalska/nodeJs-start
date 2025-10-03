@@ -1,11 +1,12 @@
 import express from "express";
 import fs from "fs";
 import fsp from "fs/promises";
+import { validate } from "../middleware/validate.js";
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to Todo API 🚀" });
+router.get("/", validate, (req, res) => {
+  res.status(200).json({ message: `Welcome to Todo API` });
 });
 router.get("/todos", (req, res) => {
     let allTodosFromTxt = ""
