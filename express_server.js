@@ -1,15 +1,14 @@
 import express from "express";
 import fs from "fs";
 import fsp from "fs/promises";
+import todosRouter from "./routes/router_node.js"
 
 const app = express();
 const PORT = 3000;
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "Welcome to Todo API 🚀" });
-});
+app.use("/", todosRouter);
 app.get("/todos", (req, res) => {
     let allTodosFromTxt = ""
     
