@@ -9,22 +9,7 @@ const PORT = 3000;
 app.use(express.json());
 
 app.use("/", todosRouter);
-app.get("/todos", (req, res) => {
-    let allTodosFromTxt = ""
-    
-    const todoWithStream = fs.createReadStream("./todo.txt");
-    todoWithStream.on("data", (chunk) => {
-        allTodosFromTxt += chunk
-    })
-    todoWithStream.on("end", () => {
-        const todosIn = allTodosFromTxt.split('\n')
-        res.status(200).json({ "data": todosIn})
-    })
-  todoWithStream.on("error", (err) => {
-    res.status(500).json({ message: "No todos yet!" });
-    console.log(err);
-  });
-});
+app.use("/todos", todosRouter);
 
 app.post("/add", async (req, res) => {
     const { todo } = req.body;
