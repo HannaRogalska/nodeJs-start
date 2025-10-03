@@ -1,6 +1,5 @@
 import express from "express";
 import fs from "fs";
-import fsp from "fs/promises";
 import todosRouter from "./routes/router_node.js"
 
 const app = express();
@@ -11,12 +10,7 @@ app.use(express.json());
 app.use("/", todosRouter);
 app.use("/todos", todosRouter);
 
-app.post("/add", async (req, res) => {
-    const { todo } = req.body;
-    if(!todo) res.status(400).json({ message: "Todo is required" });
-  await fsp.appendFile("./todo.txt", todo);
-  res.status(201).json({ message: "Todo added", todo });
-});
+app.use("/add", todosRouter);
 app.get("/todos/:id", (req, res) => {
     const { id } = req.params
     const numberId = Number(id)
