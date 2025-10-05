@@ -1,54 +1,38 @@
 import express from "express";
-import fs from "fs";
-import fsp from "fs/promises";
 import { validate } from "../middleware/validate.js";
+import Todo from "./../models/Todo.js";
 
 const router = express.Router();
 
 router.get("/", validate, (req, res) => {
   res.status(200).json({ message: `Welcome to Todo API` });
 });
-router.get("/todos", (req, res) => {
-    let allTodosFromTxt = ""
-    
-    const todoWithStream = fs.createReadStream("./todo.txt");
-    todoWithStream.on("data", (chunk) => {
-        allTodosFromTxt += chunk
-    })
-    todoWithStream.on("end", () => {
-        const todosIn = allTodosFromTxt.split('\n')
-        res.status(200).json({ "data": todosIn})
-    })
-  todoWithStream.on("error", (err) => {
-    res.status(500).json({ message: "No todos yet!" });
-    console.log(err);
-  });
+router.get("/todos", async (req, res) => {
+  const todos = await Todo.find();
+  if (todos.length === 0) {
+    return res.status(404).json({ message: "No todos found" });
+  }
+  res.status(200).json({ data: todos });
 });
 router.post("/add", async (req, res) => {
-  const { data } = req.body;
-  if (!data) return res.status(400).json({ message: "Todo is required" });
-  await fsp.appendFile("./todo.txt", data + "\n");
-  res.status(201).json({ message: "Todo added", data });
+  const { text } = req.body;
+  if (!text) return res.status(400).json({ message: "Todo is required" });
+  await Todo.create({ text: text });
+  res.status(201).json({ message: "Todo added", text });
 });
-router.get("/todos/:id", (req, res) => {
-  const { id } = req.params;
-  const numberId = Number(id);
-  let allTodosFromTxt = "";
+router.get("/todos/:id", async (req, res) => {
+   try {
+     const { id } = req.params;
+     const todo = await Todo.findById(id);
 
-  const todoWithStream = fs.createReadStream("./todo.txt");
-  todoWithStream.on("data", (chunk) => {
-    allTodosFromTxt += chunk;
-  });
-  todoWithStream.on("error", (err) => {
-    res.status(500).json({ message: "No todos yet!" });
-    console.log(err);
-  });
-  todoWithStream.on("end", () => {
-    const todosIn = allTodosFromTxt.split("\n");
-    if (todosIn[numberId] !== undefined) {
-      res.status(200).json({ data: todosIn[numberId] });
-    }
-  });
+     if (!todo) {
+       return res.status(404).json({ message: "Todo not found" });
+     }
+
+     res.status(200).json({ message: "Todo found", todo });
+   } catch (err) {
+     res.status(500).json({ message: "Server error", error: err.message });
+   }
 });
 
 export default router;

@@ -8,10 +8,7 @@ const PORT = 3000;
 app.use(express.json());
 
 app.use("/", todosRouter);
-app.use("/todos", todosRouter);
 
-app.use("/add", todosRouter);
-app.use("/todos/:id", todosRouter);
 app.listen(PORT, () => {
   connectDB()
   console.log(`🚀 Server is running at http://localhost:${PORT}`);
