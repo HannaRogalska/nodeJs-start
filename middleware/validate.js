@@ -5,3 +5,12 @@ export const validate = (req, res, next) => {
     }
     next()
 }
+export const validateTodo = (req, res, next) => {
+    const { text } = req.body;
+    if (!text || typeof text !== "string" || text.trim().length === 0) {
+        return res
+          .status(400)
+          .json({ message: "Todo is required and must be a string" });
+    }
+    next()
+}

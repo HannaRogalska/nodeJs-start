@@ -9,7 +9,7 @@ app.use(express.json());
 
 app.use("/", todosRouter);
 
-app.listen(PORT, () => {
-  connectDB()
+app.listen(PORT, async () => {
+  await connectDB()
   console.log(`🚀 Server is running at http://localhost:${PORT}`);
 });

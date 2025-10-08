@@ -1,5 +1,5 @@
 import express from "express";
-import { validate } from "../middleware/validate.js";
+import { validate, validateTodo } from "../middleware/validate.js";
 import Todo from "./../models/Todo.js";
 
 const router = express.Router();
@@ -14,25 +14,24 @@ router.get("/todos", async (req, res) => {
   }
   res.status(200).json({ data: todos });
 });
-router.post("/add", async (req, res) => {
+router.post("/add", validateTodo, async (req, res) => {
   const { text } = req.body;
-  if (!text) return res.status(400).json({ message: "Todo is required" });
   await Todo.create({ text: text });
   res.status(201).json({ message: "Todo added", text });
 });
 router.get("/todos/:id", async (req, res) => {
-   try {
-     const { id } = req.params;
-     const todo = await Todo.findById(id);
+  try {
+    const { id } = req.params;
+    const todo = await Todo.findById(id);
 
-     if (!todo) {
-       return res.status(404).json({ message: "Todo not found" });
-     }
+    if (!todo) {
+      return res.status(404).json({ message: "Todo not found" });
+    }
 
-     res.status(200).json({ message: "Todo found", todo });
-   } catch (err) {
-     res.status(500).json({ message: "Server error", error: err.message });
-   }
+    res.status(200).json({ message: "Todo found", todo });
+  } catch (err) {
+    res.status(500).json({ message: "Server error", error: err.message });
+  }
 });
 
 export default router;
